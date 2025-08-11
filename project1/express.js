@@ -1,7 +1,10 @@
 import express from 'express'
+import path from 'path'
+import bodyparser from 'body-parser'
 const __dirname = import.meta.dirname
 
 const app = express()
+const urlEncodedParser = bodyparser.urlencoded({extended: false})
 
 // app.use(express.static())
 
@@ -36,12 +39,12 @@ app.get('/getStudent', (req, res) => {
 })
 
 // admin
-app.get('/getAdmin', (req, res) => {
+app.post('/postAdmin', urlEncodedParser, (req, res) => {
     let response = {
-        adminID: req.query.adminID,
-        firstName: req.query.firstName,
-        lastName: req.query.lastName,
-        department: req.query.department
+        adminID: req.body.adminID,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        department: req.body.department
     }
 
     console.log("Response is: ", response)
