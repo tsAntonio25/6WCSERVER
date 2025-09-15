@@ -6,8 +6,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 import bodyparser from 'body-parser'
 import multer from 'multer'
-
-// const __dirname = import.meta.dirname
+import cors from 'cors'
 
 const app = express()
 const urlEncodedParser = bodyparser.urlencoded({extended: false})
@@ -22,69 +21,44 @@ const storage = multer.diskStorage ({
     }
 })
 
-const upload = multer({storage: storage}).fields([{name: 'file', maexCount: 1}])
+const upload = multer({storage: storage}).fields([{name: 'file', maxCount: 1}])
 
+// cors
+app.use(cors())
 
-
-// app.use(express.static())
-
-/*
-// routing
-// home page
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/pages/home.html'))
-})
-
-app.get('/uploadForm', (req, res) => {
-    res.sendFile(path.join(__dirname, '/pages/uploadForm.html'))
-})
-
-// student page
-app.get('/studentForm', (req, res) => {
-    res.sendFile(__dirname + '/pages/student.html')
-})
-
-// admin page
-app.get('/adminForm', (req, res) => {
-    res.sendFile(__dirname + '/pages/admin.html')
-})
-*/
 
 // get inputs
-// student
+// student form using GET 
 app.get('/getStudent', (req, res) => {
-    let response = {
-        studentID: req.query.studentID,
-        firstName: req.query.firstName,
-        lastName: req.query.lastName,
-        section: req.query.section
+    const { studentID, firstName, lastName, section } = req.query;
+    let response = { studentID, firstName, lastName, section };
+
+    console.log("Student data received:", studentID, firstName, lastName, section);
+    res.json({
+    message: "Student data received successfully!",
+    student: { studentID, firstName, lastName, section },
+  });
+})
+
+// admin form using POST
+app.post('/postAdmin', (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({ error: 'Error uploading file', details: err.message });
     }
 
-    console.log("Response is: ", response)
-    res.end(`Received Data: ${JSON.stringify(response)}`)
-})
+    let response = {
+      adminId: req.body.adminId,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      department: req.body.department,
+      uploadedFile: req.files && req.files.file ? req.files.file[0].originalname : null
+    };
 
-// admin
-app.post('/postAdmin', (req, res) => {
-    
-    upload(req, res, (err) => {
-
-        if (err) return res.statusCode(404).end('Error uploading file')
-
-        let response = {
-            adminId: req.body.adminId,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            department: req.body.department,
-            uploadedFile: req.files['file'][0]
-        }
-
-        // check
-        console.log(`Received Data: ${JSON.stringify(response)}`)
-        res.end('File and form data uploaded successfully!')
-        })
-    
-})
+    console.log(`Admin data received: ${JSON.stringify(response)}`);
+    res.json(response); 
+  });
+});
 
 
 // create server
