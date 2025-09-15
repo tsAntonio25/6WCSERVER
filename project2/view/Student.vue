@@ -1,0 +1,69 @@
+<template>
+    <h1>Student Form</h1>
+        <form action="/getStudent" method="get">
+            <label for="studentID">Student ID</label>
+            <input type="text" name="studentID" id="studentID">
+
+            <label for="firstName">First Name</label>
+            <input type="text" name="firstName" id="firstName">
+
+            <label for="lastName">Last Name</label>
+            <input type="text" name="lastName" id="lastName">
+
+            <label for="section">Section</label>
+            <input type="text" name="section" id="section">
+
+            <input type="submit" value="Submit">
+        </form>
+</template>
+
+<script>
+
+</script>
+
+<style scoped>
+* {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                background: #99cbe1;
+            }
+
+            h1 {
+                text-align: center;
+                margin-top: 4em;
+            }
+
+            form {
+                border: 3px solid #0035a9;
+                box-shadow: 5px 5px 15px #031c38;
+                background: #ffffff;
+                border-radius: 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 30vh;
+                margin: 1em auto;
+                padding: 1em;
+            }
+
+            label {
+                padding-top: 1em;
+            }
+
+            input[type=submit] {
+                margin: 1em 0;
+                padding: 0.25em 0.5em;
+                border-radius: 5px;
+                border: 1px solid #0035a9;
+            }
+
+            input[type=submit]:hover {
+                color: #fff;
+                background-color: #0035a9;
+                transition: 300ms ease-in-out;
+            }
+</style>
